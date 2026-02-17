@@ -20,3 +20,31 @@ def get_users():
             return users
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/categories")
+def developer():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT * FROM categories"))
+            categories = [dict(row._mapping) for row in result]
+            return categories
+    except Exception as e:
+        return {"error": str(e)}
+@app.get("/order")
+def order_deatils():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT * FROM orders"))
+            orders = [dict(row._mapping) for row in result]
+            return orders
+    except Exception as e:
+        return {"error": str(e)}
+@app.get("/product")
+def product_details():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT * FROM products"))
+            products = [dict(row._mapping) for row in result]
+            return products
+    except Exception as e:
+        return {"error": str(e)}
