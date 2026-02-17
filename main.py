@@ -1,7 +1,21 @@
 from fastapi import FastAPI
 from sqlalchemy import create_engine, text
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+origins = [
+    "http://localhost:5173",
+    "http://192.168.1.6:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,   # or ["*"] for testing
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DATABASE_URL = "postgresql://weather_app_projects_user:1WqSXc5pDAodgXq8BObeRGBsObpW0pMm@dpg-d685cm0boq4c73csfu7g-a.oregon-postgres.render.com/weather_app_projects"
 
