@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from sqlalchemy import create_engine, text
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -62,3 +63,18 @@ def product_details():
             return products
     except Exception as e:
         return {"error": str(e)}
+
+class User(BaseModel):
+    name: str
+    email: str
+
+@app.post("/users")
+def create_user(name: str, email: str):
+        try:
+            with engine.connect() as conn:
+               query = text("INSERT INTO users (name, email)  VALUES (:name, :email)")
+               conn.execute(query, {"name": name, "email": email})
+               conn.commit()
+            return {"message": "User Created Succesfully"}
+        except Exception as e:
+            return {"error": str(e)}
